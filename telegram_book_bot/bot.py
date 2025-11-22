@@ -4,8 +4,9 @@ from user import *
 import re
 import random
 import requests
-from config import TELEGRAM_BOT_TOKEN, GEMINI_API_KEY, BOOK_API_URL, Google_BOOK_API_KEY
+from config import TELEGRAM_BOT_TOKEN, GEMINI_API_KEY, BOOK_API_URL, Google_BOOK_API_KEY, BIGBOOK_API_KEY, BIGBOOK_API_URL
 from gemini_api import get_gemini_suggestion
+from bigbook_api import get_bigbook_recommendation
 init_db()
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
@@ -245,7 +246,7 @@ Your response (in Persian, maximum 150 words):"""
     return None
 
 def get_ganjoor_poem_recommendation(user_genres, read_books, recommended_books):
-    """Get a Persian poetry recommendation from Ganjoor API"""
+    """Get a Persian poetry recommendation from Ganjoor API with actual verses"""
     try:
         # First, get list of poets
         response = requests.get(f'{GANJOOR_API_URL}/poets')
@@ -299,12 +300,34 @@ def get_ganjoor_poem_recommendation(user_genres, read_books, recommended_books):
                                 # Get a random poem
                                 selected_poem = random.choice(poems)
                                 poem_title = selected_poem.get('title', book_title)
-                                poem_excerpt = selected_poem.get('excerpt', '')
+                                poem_id = selected_poem.get('id')
+                                
+                                # Fetch full poem with verses
+                                verses_text = ''
+                                if poem_id:
+                                    try:
+                                        poem_response = requests.get(f'{GANJOOR_API_URL}/poem/{poem_id}')
+                                        poem_response.raise_for_status()
+                                        full_poem = poem_response.json()
+                                        verses = full_poem.get('verses', [])
+                                        
+                                        # Get first 1-2 couplets (2-4 verses)
+                                        if verses:
+                                            # Take first 4 verses (2 couplets) or fewer if not available
+                                            verse_lines = []
+                                            for verse in verses[:4]:
+                                                verse_lines.append(verse.get('text', ''))
+                                            
+                                            verses_text = '\n'.join(verse_lines)
+                                    except Exception as verse_error:
+                                        print(f"Error fetching verses: {verse_error}")
+                                        verses_text = selected_poem.get('excerpt', '')[:200]
                                 
                                 return {
                                     'title': poem_title,
                                     'author': poet_name,
-                                    'excerpt': poem_excerpt[:200] if poem_excerpt else '',  # First 200 chars
+                                    'excerpt': selected_poem.get('excerpt', '')[:200] if not verses_text else '',
+                                    'verses': verses_text,
                                     'book': book_title,
                                     'type': 'poetry'
                                 }
@@ -316,6 +339,7 @@ def get_ganjoor_poem_recommendation(user_genres, read_books, recommended_books):
                         'title': book_title,
                         'author': poet_name,
                         'excerpt': '',
+                        'verses': '',
                         'book': book_title,
                         'type': 'poetry'
                     }
@@ -325,6 +349,7 @@ def get_ganjoor_poem_recommendation(user_genres, read_books, recommended_books):
             'title': f'مجموعه اشعار {poet_name}',
             'author': poet_name,
             'excerpt': '',
+            'verses': '',
             'book': 'مجموعه اشعار',
             'type': 'poetry'
         }
@@ -879,15 +904,19 @@ def get_poem_suggestion(user_id):
     markup.add(types.InlineKeyboardButton('پیشنهاد دیگر بده', callback_data='another_poem'))
     markup.add(types.InlineKeyboardButton('این شعر را می‌خوانم', callback_data='will_read_poem'))
     
-    message_text = f"📜 شعر پیشنهادی من به تو:\n\n"
-    message_text += f"📖 عنوان: {poem_data['title']}\n"
-    message_text += f"✍️ شاعر: {poem_data['author']}\n"
+    message_text = f" شعر پیشنهادی من به تو:\n\n"
+    message_text += f" عنوان: {poem_data['title']}\n"
+    message_text += f" شاعر: {poem_data['author']}\n"
     
     if poem_data.get('book'):
-        message_text += f"📚 مجموعه: {poem_data['book']}\n"
+        message_text += f" مجموعه: {poem_data['book']}\n"
     
-    if poem_data.get('excerpt'):
-        message_text += f"\n🌟 نمونه:\n{poem_data['excerpt']}...\n"
+    # Display verses if available
+    if poem_data.get('verses'):
+        message_text += f"\n چند بیت از شعر:\n\n"
+        message_text += f"{poem_data['verses']}\n"
+    elif poem_data.get('excerpt'):
+        message_text += f"\n نمونه:\n{poem_data['excerpt']}...\n"
     
     message_text += f"\nکدام گزینه رو انتخاب می‌کنی؟"
     
