@@ -1,11 +1,11 @@
 # Enhanced Bot with BigBookAPI - Implementation Plan
 
-## ✅ What's Already Done:
+## What's Already Done:
 
 1. **BigBookAPI Integration**: 
    - Added API key to config.py
    - Created `bigbook_api.py` module
-   - Created test script `test_bigbook.py` (working!)
+   - Created test script `test_bigbook.py` (working)
    
 2. **Enhanced Database**:
    - Migrated database with 8 new profile fields
@@ -15,7 +15,7 @@
    - bot.py now imports BigBookAPI configuration
    - bot.py imports bigbook_api module
 
-## 🎯 Next Steps to Complete Integration:
+## Next Steps to Complete Integration:
 
 ### 1. Enhanced Registration Flow (Add to bot.py)
 
@@ -26,49 +26,49 @@ Add these new registration steps after existing ones:
 if step == 'reading_speed':
     markup = types.InlineKeyboardMarkup()
     markup.add(
-        types.InlineKeyboardButton('سریع', callback_data='speed:سریع'),
-        types.InlineKeyboardButton('متوسط', callback_data='speed:متوسط'),
-        types.InlineKeyboardButton('آهسته', callback_data='speed:آهسته')
+        types.InlineKeyboardButton('Fast', callback_data='speed:Fast'),
+        types.InlineKeyboardButton('Medium', callback_data='speed:Medium'),
+        types.InlineKeyboardButton('Slow', callback_data='speed:Slow')
     )
-    bot.send_message(user_id, 'سرعت خواندنت چطوره؟', reply_markup=markup)
+    bot.send_message(user_id, 'What is your reading speed?', reply_markup=markup)
 
 if step == 'book_length':
     markup = types.InlineKeyboardMarkup()
     markup.add(
-        types.InlineKeyboardButton('کوتاه', callback_data='length:کوتاه'),
-        types.InlineKeyboardButton('متوسط', callback_data='length:متوسط'),
-        types.InlineKeyboardButton('بلند', callback_data='length:بلند')
+        types.InlineKeyboardButton('Short', callback_data='length:Short'),
+        types.InlineKeyboardButton('Medium', callback_data='length:Medium'),
+        types.InlineKeyboardButton('Long', callback_data='length:Long')
     )
-    bot.send_message(user_id, 'ترجیح می‌دی کتاب‌های کوتاه یا بلند بخونی؟', reply_markup=markup)
+    bot.send_message(user_id, 'Do you prefer short or long books?', reply_markup=markup)
 
 if step == 'complexity':
     markup = types.InlineKeyboardMarkup()
     markup.add(
-        types.InlineKeyboardButton('ساده', callback_data='complexity:ساده'),
-        types.InlineKeyboardButton('متوسط', callback_data='complexity:متوسط'),
-        types.InlineKeyboardButton('پیچیده', callback_data='complexity:پیچیده')
+        types.InlineKeyboardButton('Simple', callback_data='complexity:Simple'),
+        types.InlineKeyboardButton('Medium', callback_data='complexity:Medium'),
+        types.InlineKeyboardButton('Complex', callback_data='complexity:Complex')
     )
-    bot.send_message(user_id, 'چه سطحی از پیچیدگی کتاب رو ترجیح میدی؟', reply_markup=markup)
+    bot.send_message(user_id, 'What complexity level do you prefer?', reply_markup=markup)
 
 if step == 'preferred_era':
     markup = types.InlineKeyboardMarkup()
     markup.add(
-        types.InlineKeyboardButton('کلاسیک', callback_data='era:کلاسیک'),
-        types.InlineKeyboardButton('معاصر', callback_data='era:معاصر'),
-        types.InlineKeyboardButton('مدرن', callback_data='era:مدرن'),
-        types.InlineKeyboardButton('همه', callback_data='era:همه')
+        types.InlineKeyboardButton('Classic', callback_data='era:Classic'),
+        types.InlineKeyboardButton('Contemporary', callback_data='era:Contemporary'),
+        types.InlineKeyboardButton('Modern', callback_data='era:Modern'),
+        types.InlineKeyboardButton('All', callback_data='era:All')
     )
-    bot.send_message(user_id, 'کتاب‌های کدوم دوره رو بیشتر دوست داری؟', reply_markup=markup)
+    bot.send_message(user_id, 'Which era of books do you prefer?', reply_markup=markup)
 
 if step == 'reading_purpose':
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(
-        types.InlineKeyboardButton('تفریح', callback_data='purpose:تفریح'),
-        types.InlineKeyboardButton('یادگیری', callback_data='purpose:یادگیری'),
-        types.InlineKeyboardButton('کار', callback_data='purpose:کار'),
-        types.InlineKeyboardButton('مطالعه علمی', callback_data='purpose:مطالعه')
+        types.InlineKeyboardButton('Entertainment', callback_data='purpose:Entertainment'),
+        types.InlineKeyboardButton('Learning', callback_data='purpose:Learning'),
+        types.InlineKeyboardButton('Work', callback_data='purpose:Work'),
+        types.InlineKeyboardButton('Study', callback_data='purpose:Study')
     )
-    bot.send_message(user_id, 'هدف اصلیت از خوندن کتاب چیه؟', reply_markup=markup)
+    bot.send_message(user_id, 'What is your main purpose for reading?', reply_markup=markup)
 ```
 
 ### 2. Update get_suggestion() Function
@@ -88,11 +88,11 @@ def get_suggestion(user_id):
         'gender': user[4],
         'genres': user[5].split(','),
         'best_book': user[6],
-        'reading_speed': user[7] if len(user) > 7 else 'متوسط',
-        'book_length_preference': user[8] if len(user) > 8 else 'متوسط',
-        'reading_purpose': user[9] if len(user) > 9 else 'تفریح',
-        'preferred_era': user[12] if len(user) > 12 else 'همه',
-        'complexity_level': user[13] if len(user) > 13 else 'متوسط',
+        'reading_speed': user[7] if len(user) > 7 else 'Medium',
+        'book_length_preference': user[8] if len(user) > 8 else 'Medium',
+        'reading_purpose': user[9] if len(user) > 9 else 'Entertainment',
+        'preferred_era': user[12] if len(user) > 12 else 'All',
+        'complexity_level': user[13] if len(user) > 13 else 'Medium',
     }
     
     read_books = get_read_books(user_id)
@@ -138,47 +138,47 @@ def update_enhanced_profile(user_id, field, value):
 
 ### 4. Update Main Menu
 
-Add a new button for "تنظیمات پیشرفته" (Advanced Settings):
+Add a new button for Advanced Settings:
 
 ```python
 def show_main_menu(user_id):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     markup.add(
-        types.KeyboardButton('پیشنهاد کتاب'),
-        types.KeyboardButton('پیشنهاد شعر فارسی')
+        types.KeyboardButton('Book Recommendation'),
+        types.KeyboardButton('Persian Poetry')
     )
-    markup.add(types.KeyboardButton('گفتگو درباره کتاب'))
-    markup.add(types.KeyboardButton('⚙️ تنظیمات پروفایل'))
+    markup.add(types.KeyboardButton('Book Discussion'))
+    markup.add(types.KeyboardButton('Profile Settings'))
     send_typing(user_id)
-    bot.send_message(user_id, 'چه کمکی ازم برمیاد؟', reply_markup=markup)
+    bot.send_message(user_id, 'How can I help you?', reply_markup=markup)
 ```
 
 ### 5. Add Profile Settings Handler
 
 ```python
-@bot.message_handler(func=lambda m: m.text == '⚙️ تنظیمات پروفایل')
+@bot.message_handler(func=lambda m: m.text == 'Profile Settings')
 def handle_profile_settings(message):
     user_id = message.from_user.id
     user = get_user_by_telegram_id(user_id)
     
     if not user or user[-1] == 0:
-        bot.send_message(user_id, 'ابتدا پروفایلت را کامل کن.')
+        bot.send_message(user_id, 'Please complete your profile first.')
         return
     
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(
-        types.InlineKeyboardButton('سرعت خواندن', callback_data='edit:reading_speed'),
-        types.InlineKeyboardButton('طول کتاب', callback_data='edit:book_length'),
-        types.InlineKeyboardButton('پیچیدگی', callback_data='edit:complexity'),
-        types.InlineKeyboardButton('دوره زمانی', callback_data='edit:era'),
-        types.InlineKeyboardButton('هدف مطالعه', callback_data='edit:purpose'),
-        types.InlineKeyboardButton('بازگشت', callback_data='back_to_menu')
+        types.InlineKeyboardButton('Reading Speed', callback_data='edit:reading_speed'),
+        types.InlineKeyboardButton('Book Length', callback_data='edit:book_length'),
+        types.InlineKeyboardButton('Complexity', callback_data='edit:complexity'),
+        types.InlineKeyboardButton('Era', callback_data='edit:era'),
+        types.InlineKeyboardButton('Purpose', callback_data='edit:purpose'),
+        types.InlineKeyboardButton('Back', callback_data='back_to_menu')
     )
     
-    bot.send_message(user_id, '⚙️ تنظیمات پروفایل:\nکدوم مورد رو میخوای تغییر بدی؟', reply_markup=markup)
+    bot.send_message(user_id, 'Profile Settings:\nWhich setting would you like to change?', reply_markup=markup)
 ```
 
-## 📊 Benefits of BigBookAPI Integration:
+## Benefits of BigBookAPI Integration:
 
 1. **More Books**: Access to 4+ million books
 2. **Better Filtering**: Can filter by year, author, genre
@@ -186,7 +186,7 @@ def handle_profile_settings(message):
 4. **Advanced Matching**: Better recommendations based on detailed profile
 5. **Hybrid Approach**: BigBookAPI + Google Books + Ganjoor for variety
 
-## 🔧 Testing:
+## Testing:
 
 ```bash
 # Test BigBookAPI
@@ -199,15 +199,15 @@ python3 migrate_db.py
 sqlite3 users.db "PRAGMA table_info(users);"
 ```
 
-## 📝 Summary:
+## Summary:
 
-✅ BigBookAPI integration ready
-✅ Database enhanced with 8 new fields
-✅ Module created (bigbook_api.py)
-✅ Config updated
-✅ Imports updated
+- BigBookAPI integration ready
+- Database enhanced with 8 new fields
+- Module created (bigbook_api.py)
+- Config updated
+- Imports updated
 
-🎯 To Complete:
+To Complete:
 - Add enhanced registration steps
 - Update get_suggestion() to use BigBookAPI
 - Add profile settings menu
@@ -218,4 +218,4 @@ The bot now has THREE recommendation sources:
 2. **Google Books** - Fallback, wider coverage
 3. **Ganjoor** - Persian poetry specialization
 
-This creates the most comprehensive Persian book recommendation bot! 🎉
+This creates the most comprehensive Persian book recommendation bot!

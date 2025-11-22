@@ -1,9 +1,7 @@
-# کتاب باز - ربات تلگرام پیشنهاد کتاب
 # Ketab Baz - Telegram Book Recommendation Bot
 
-## 🌟 Features / ویژگی‌ها
+## Features
 
-### English
 - **Personalized Book Recommendations** from Google Books API based on user preferences
 - **Persian Poetry Recommendations** from Ganjoor API featuring classic and contemporary Persian poets
 - **AI-Powered Conversations** about books using Gemini API
@@ -12,27 +10,20 @@
 - **Graceful Error Handling** with fallback mechanisms when APIs fail
 - **Clean Persian UI** with reply keyboards and inline buttons
 
-### فارسی
-- **پیشنهاد کتاب شخصی‌سازی شده** از Google Books API بر اساس سلیقه کاربر
-- **پیشنهاد شعر فارسی** از API گنجور شامل شاعران کلاسیک و معاصر
-- **گفتگوی هوشمند** درباره کتاب‌ها با استفاده از Gemini API
-- **ثبت‌نام چند مرحله‌ای** با سفارشی‌سازی پروفایل
-- **سیستم ترجمه هوشمند** با دیکشنری نام نویسندگان (بیش از 60 نویسنده مشهور)
-- **مدیریت خطا** با سازوکار جایگزین در صورت خطای APIها
-- **رابط کاربری فارسی** با کیبورد و دکمه‌های شخصی‌سازی شده
+## API Integrations
 
-## 📚 API Integrations / یکپارچگی‌های API
+## API Integrations
 
 ### 1. Google Books API
 - Dynamic book recommendations based on genre, age, and reading history
 - Filters out already read/recommended books
 - Fallback to static book list if API fails
 
-### 2. Ganjoor API (NEW! / جدید!)
-- Access to 228+ Persian poets (حافظ، سعدی، فردوسی، مولانا، خیام and more)
+### 2. Ganjoor API
+- Access to 228+ Persian poets (Hafez, Saadi, Ferdowsi, Rumi, Khayyam and more)
 - Random poetry recommendations from various collections
 - Displays poem excerpts for preview
-- No API key required - completely free!
+- No API key required - completely free
 
 ### 3. Gemini API
 - Book title translation to Persian
@@ -40,29 +31,33 @@
 - Validates book-related queries
 - Smart error detection and fallback
 
-## 🎯 How It Works / نحوه کار
+## How It Works
 
-### For Book Recommendations / برای پیشنهاد کتاب
+## How It Works
+
+### For Book Recommendations
 1. User completes profile (name, age, gender, favorite genres, favorite book)
 2. Bot uses Google Books API to find relevant books
 3. Filters out previously recommended/read books
 4. Translates book info to Persian when possible
 5. User can mark as read, request another, or save to reading list
 
-### For Persian Poetry Recommendations / برای پیشنهاد شعر فارسی
+### For Persian Poetry Recommendations
 1. Bot fetches list of Persian poets from Ganjoor
 2. Randomly selects a poet (excluding previously recommended ones)
 3. Retrieves poet's collections and poems
 4. Displays poem title, author, collection, and excerpt
 5. User can mark as read, request another, or save to reading list
 
-### For Book Discussions / برای گفتگو درباره کتاب
+### For Book Discussions
 1. User enters conversation mode
 2. Gemini validates if message is book-related
 3. AI generates relevant Persian response
 4. Maintains context throughout conversation
 
-## 🛠 Installation / نصب
+## Installation
+
+## Installation
 
 ```bash
 # Install required packages
@@ -77,7 +72,9 @@ Google_BOOK_API_KEY = "your_google_books_key"
 python3 bot.py
 ```
 
-## 📦 Project Structure / ساختار پروژه
+## Project Structure
+
+## Project Structure
 
 ```
 telegram_book_bot/
@@ -89,18 +86,19 @@ telegram_book_bot/
 ├── requirements.txt      # Python dependencies
 ├── users.db             # SQLite database
 ├── test_gemini.py       # Gemini API test script
-└── test_ganjoor.py      # Ganjoor API test script (NEW!)
+└── test_ganjoor.py      # Ganjoor API test script
 ```
 
-## 🔑 Key Features Details / جزئیات ویژگی‌های کلیدی
+## Key Features Details
 
-### Author Translation Dictionary / دیکشنری ترجمه نام نویسندگان
+### Author Translation Dictionary
+### Author Translation Dictionary
 - 60+ pre-translated famous authors
 - Instant translation without API calls
-- Supports variations (e.g., "Friedrich A. Hayek" → "friedrich hayek")
+- Supports variations (e.g., "Friedrich A. Hayek" -> "friedrich hayek")
 - Falls back to transliteration for unknown names
 
-### Ganjoor Integration / یکپارچگی با گنجور
+### Ganjoor Integration
 - **Base URL**: `https://api.ganjoor.net/api/ganjoor`
 - **Endpoints Used**:
   - `/poets` - Get list of all poets
@@ -110,26 +108,29 @@ telegram_book_bot/
 - **CORS Enabled**
 - **Completely Free**
 
-### Error Handling / مدیریت خطا
-- API quota exceeded → Returns original text/graceful message
-- Network errors → Fallback to static data
-- Empty responses → User-friendly error messages
-- Translation failures → Returns English text
+### Error Handling
+### Error Handling
+- API quota exceeded -> Returns original text/graceful message
+- Network errors -> Fallback to static data
+- Empty responses -> User-friendly error messages
+- Translation failures -> Returns English text
 
-## 🎨 User Interface / رابط کاربری
+## User Interface
 
-### Main Menu Buttons / دکمه‌های منوی اصلی
-- پیشنهاد کتاب (Book Recommendation)
-- پیشنهاد شعر فارسی (Persian Poetry Recommendation) **NEW!**
-- گفتگو درباره کتاب (Book Discussion)
-- بازگشت به منو (Back to Menu)
+### Main Menu Buttons
+- Book Recommendation
+- Persian Poetry Recommendation
+- Book Discussion
+- Back to Menu
 
-### Inline Buttons / دکمه‌های درون‌خطی
-- این کتاب/شعر را خوانده‌ام (Already Read)
-- پیشنهاد دیگر بده (Another Suggestion)
-- این کتاب/شعر را می‌خوانم (Will Read)
+### Inline Buttons
+- Already Read
+- Another Suggestion
+- Will Read
 
-## 📊 Database Schema / ساختار پایگاه داده
+## Database Schema
+
+## Database Schema
 
 ```sql
 users (
@@ -160,19 +161,19 @@ recommended_books (
 )
 ```
 
-## 🧪 Testing / تست
+## Testing
 
 ### Test Gemini API
 ```bash
 python3 test_gemini.py
 ```
 
-### Test Ganjoor API (NEW!)
+### Test Ganjoor API
 ```bash
 python3 test_ganjoor.py
 ```
 
-## 📝 Notes / یادداشت‌ها
+## Notes
 
 1. **Ganjoor API** is specifically for Persian poetry - perfect complement to Google Books
 2. **No API key needed** for Ganjoor - completely free and open
@@ -180,7 +181,7 @@ python3 test_ganjoor.py
 4. **Hybrid approach**: Google Books for general books + Ganjoor for Persian poetry
 5. **Preserved existing features**: All previous Google Books functionality remains unchanged
 
-## 🔮 Future Enhancements / بهبودهای آینده
+## Future Enhancements
 
 - Add book/poem favorites system
 - Implement reading progress tracking
@@ -189,11 +190,11 @@ python3 test_ganjoor.py
 - Add more poetry APIs (English, Arabic, etc.)
 - Implement user ratings and reviews
 
-## 📄 License / مجوز
+## License
 
 This project is for educational purposes.
 
-## 🤝 Contributing / مشارکت
+## Contributing
 
 Contributions are welcome! Feel free to:
 - Add more authors to the translation dictionary
@@ -204,5 +205,4 @@ Contributions are welcome! Feel free to:
 
 ---
 
-Made with ❤️ for Persian book and poetry lovers
-ساخته شده با ❤️ برای عاشقان کتاب و شعر فارسی
+Made for Persian book and poetry lovers
